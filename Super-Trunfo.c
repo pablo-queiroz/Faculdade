@@ -16,6 +16,7 @@ typedef struct {
     int numPontosTuristicos;          // Número de pontos turísticos
     float densidadePopulacional;      // Habitantes por km²
     float pibPerCapita;               // PIB per capita
+    float superPoder;                 //Super poder
 } Carta;
 
 // Função para ler os dados de uma carta
@@ -45,6 +46,14 @@ void lerCarta(Carta *carta, int numero) {
 
     carta->densidadePopulacional = carta->populacao / carta->area;
     carta->pibPerCapita = carta->pib / carta->populacao;
+
+    // Super poder do Super Trunfo
+        carta->superPoder = (float)carta->populacao +
+                        carta->area +
+                        carta->pib +
+                        carta->numPontosTuristicos +
+                        carta->pibPerCapita +
+                        (1 / carta->densidadePopulacional);
 }
 
 // Função para exibir os dados de uma carta
@@ -61,6 +70,19 @@ void exibirCarta(const Carta *carta, int numero) {
     printf("PIB per Capita: %.2f reais\n", carta->pibPerCapita);
 }
 
+// Comparando as cartas
+void compararCartas(Carta *c1, Carta *c2) {
+    printf("\n--- Comparação de Cartas ---\n");
+
+    printf("População: Carta 1 venceu (%d)\n", c1->populacao > c2->populacao);
+    printf("Área: Carta 1 venceu (%d)\n", c1->area > c2->area);
+    printf("PIB: Carta 1 venceu (%d)\n", c1->pib > c2->pib);
+    printf("Pontos Turísticos: Carta 1 venceu (%d)\n", c1->numPontosTuristicos > c2->numPontosTuristicos);
+    printf("Densidade Populacional: Carta 1 venceu (%d)\n", c1->densidadePopulacional < c2->densidadePopulacional); // menor vence
+    printf("PIB per Capita: Carta 1 venceu (%d)\n", c1->pibPerCapita > c2->pibPerCapita);
+    printf("Super Poder: Carta 1 venceu (%d)\n", c1->superPoder > c2->superPoder);
+}
+
 int main() {
     Carta cartas[QTD_CARTAS];
 
@@ -68,11 +90,14 @@ int main() {
     for (int i = 0; i < QTD_CARTAS; i++) {
         lerCarta(&cartas[i], i);
     }
-
-    // Exibição dos dados
+    
+    // Exibição das duas cartas
     for (int i = 0; i < QTD_CARTAS; i++) {
         exibirCarta(&cartas[i], i);
     }
+
+    // Comparação das duas cartas
+    compararCartas(&cartas[0], &cartas[1]);
 
     return 0;
 }
